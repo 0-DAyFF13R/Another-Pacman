@@ -18,6 +18,7 @@ namespace AnotherPacman
         private Random rand = new Random();
         private Level level = new Level();
         private Hero hero = new Hero();
+        private Food food = new Food();
         private Timer mainTimer = null;
         private Timer enemySpawningTimer = null;
         private List<Enemy> enemies = new List<Enemy>();
@@ -55,7 +56,15 @@ namespace AnotherPacman
 
             AddLevel();
             AddHero();
-            AddEnemies();
+            AddEnemies(initialEnemyCount);
+            AddFood();
+        }
+
+        private void AddFood()
+        {
+            this.Controls.Add(food);
+            food.Parent = level;
+            food.BringToFront();
         }
 
         private void AddLevel()
@@ -83,13 +92,13 @@ namespace AnotherPacman
         {
             enemySpawningTimer = new Timer();
             enemySpawningTimer.Tick += EnemySpawningTimer_Tick;
-            enemySpawningTimer.Interval = 30;
+            enemySpawningTimer.Interval = 3000;
             enemySpawningTimer.Start();
         }
 
         private void EnemySpawningTimer_Tick(object sender, EventArgs e)
         {
-            AddEnemies();
+            AddEnemies(1);
         }
 
         private void MainTimer_Tick(object sender, EventArgs e)
@@ -99,6 +108,7 @@ namespace AnotherPacman
             HeroBorderCollision();
             EnemyBorderCollision();
             HeroEnemyColission();
+            HeroFoodCollision();
         }
 
         private void Game_KeyDown(object sender, KeyEventArgs e)
@@ -171,10 +181,25 @@ namespace AnotherPacman
             }
         }
 
-        private void AddEnemies()
+        private void HeroFoodCollision()
+        {
+            if (hero.Bounds.IntersectsWith(food.Bounds))
+            {
+                hero.Step += 1;
+                RespawnFood();
+            }
+        }
+
+        private void RespawnFood()
+        {
+            food.Location = new Point(rand.Next(0, 550), rand.Next(0, 550));
+            food.SetType(rand.Next(1, 5));
+        }
+
+        private void AddEnemies(int enemyCount)
         {
             Enemy enemy;
-            for (int i = 0; i < initialEnemyCount; i++)
+            for (int i = 0; i < enemyCount; i++)
             {
                 enemy = new Enemy();
                 enemy.Location = new Point(rand.Next(0, 550), rand.Next(0, 550));
