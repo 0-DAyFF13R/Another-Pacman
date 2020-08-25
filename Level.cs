@@ -18,8 +18,8 @@ namespace AnotherPacman
         private void InitializeLevel()
         {
             this.BackColor = Color.LightSkyBlue;
-            this.Size = new Size(400, 400);
-            this.Location = new Point(200, 200);
+            this.Size = new Size(600, 600);
+            this.Location = new Point(0, 0);
             this.Name = "Level";
         }
     }

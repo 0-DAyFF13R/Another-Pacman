@@ -9,5 +9,9 @@ namespace AnotherPacman
 {
     class Food : PictureBox
     {
+        public Food()
+        {
+
+        }
     }
 }
